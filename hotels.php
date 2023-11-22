@@ -40,7 +40,7 @@ $hotels = [
 
 $has_parking = $_GET["has_parking"] ?? "off";
 
-var_dump($has_parking);
+// var_dump($has_parking);
 
 /* foreach ($hotels as $hotel) {
     foreach ($hotel as $key => $hotelInfo) {
@@ -79,12 +79,12 @@ var_dump($has_parking);
                         </thead>
                         <tbody>   
 
-                            <?php foreach ($hotels as $hotel) {                                 
+                            <?php foreach ($hotels as $hotel): ?>
+                                <?php                              
                                 if($has_parking == "on" && $hotel["parking"] 
-                                || $has_parking == "off")  {?>
-
+                                || $has_parking == "off"): ?>
                                 <tr>
-                                    <?php foreach ($hotel as $key => $hotelInfo) { ?>
+                                    <?php foreach ($hotel as $key => $hotelInfo): ?>
                                         <td>
                                             <?php 
                                                 if ($key == "parking") {
@@ -98,18 +98,17 @@ var_dump($has_parking);
                                                 }
                                             ?> 
                                         </td>
-                                    <?php } ?>
+                                    <?php endforeach; ?>
                                 </tr>
-
-                            <?php }} ?>
-
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                     <!-- Table End -->
             </div>
 
     <form method="get" class="text-center">
-        <input type="checkbox" name="has_parking">
+        <input type="checkbox" name="has_parking" <?= ($has_parking === 'on') ? 'checked="checked"' : '' ?>>
         <label for="hasParking">Only show hotels with parking?</label>
         <input class="btn btn-outline-secondary py-0 px-2" type="submit" value="filter">
     </form>
