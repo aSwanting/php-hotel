@@ -38,7 +38,9 @@ $hotels = [
     ],
 ];
 
-// var_dump($hotels);
+$has_parking = $_GET["has_parking"] ?? "off";
+
+var_dump($has_parking);
 
 /* foreach ($hotels as $hotel) {
     foreach ($hotel as $key => $hotelInfo) {
@@ -61,51 +63,57 @@ $hotels = [
     <body>     
 
     <div class="container p-5">
-    <h3>Hotel Listing</h3>
+        <h2 class="mb-5 text-center ">Hotel Listing</h2>
 
-    <div class="table-wrapper p-3 border border-1 rounded-4 overflow-hidden">
+            <div class="table-wrapper p-3 border border-1 rounded-4 overflow-hidden mb-5">
+                    <!-- Table Start -->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Parking</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Distance to center</th>
+                            </tr>
+                        </thead>
+                        <tbody>   
 
-        <!-- Table Start -->
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Parking</th>
-                        <th scope="col">Rating</th>
-                        <th scope="col">Distance to center</th>
-                    </tr>
-                </thead>
-                <tbody>                
-                    <?php foreach ($hotels as $hotel) { ?>
-                        <tr>
+                            <?php foreach ($hotels as $hotel) {                                 
+                                if($has_parking == "on" && $hotel["parking"] 
+                                || $has_parking == "off")  {?>
 
-                            <?php foreach ($hotel as $key => $hotelInfo) { ?>
-                                <td>
+                                <tr>
+                                    <?php foreach ($hotel as $key => $hotelInfo) { ?>
+                                        <td>
+                                            <?php 
+                                                if ($key == "parking") {
+                                                    echo $hotelInfo ?  "Available" :  "Not available";
 
-                                    <?php 
+                                                } else if ($key == "distance_to_center") {
+                                                    echo $hotelInfo . " km";   
 
-                                        if ($key == "parking") {
-                                            echo $hotelInfo ?  "Available" :  "Not available";
+                                                } else {
+                                                    echo $hotelInfo;
+                                                }
+                                            ?> 
+                                        </td>
+                                    <?php } ?>
+                                </tr>
 
-                                        } else if ($key == "distance_to_center") {
-                                            echo $hotelInfo . " km";   
+                            <?php }} ?>
 
-                                        } else {
-                                            echo $hotelInfo;
-                                        }
+                        </tbody>
+                    </table>
+                    <!-- Table End -->
+            </div>
 
-                                    ?> 
+    <form method="get" class="text-center">
+        <input type="checkbox" name="has_parking">
+        <label for="hasParking">Only show hotels with parking?</label>
+        <input class="btn btn-outline-secondary py-0 px-2" type="submit" value="filter">
+    </form>
 
-                                </td>
-                            <?php } ?>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-            <!-- Table End -->
-
-        </div>
     </div>
 
 
