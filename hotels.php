@@ -1,5 +1,6 @@
 <?php
 
+$has_parking = $_GET["has_parking"] ?? "off";
 $hotels = [
     [
         "name" => "Hotel Belvedere",
@@ -38,83 +39,80 @@ $hotels = [
     ],
 ];
 
-$has_parking = $_GET["has_parking"] ?? "off";
-
-// var_dump($has_parking);
-
-/* foreach ($hotels as $hotel) {
-    foreach ($hotel as $key => $hotelInfo) {
-    ?>
-    <p><?php echo $key?></p>
-    <p><?php echo $hotelInfo?></p>
-    <?php
-    }
-} */
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>PHP Hotel Table</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    </head>
-    <body>     
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Hotel Table</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>     
 
     <div class="container p-5">
-        <h2 class="mb-5 text-center ">Hotel Listing</h2>
+    <h2 class="mb-5 text-center ">Hotel Listing</h2>
+    <div class="table-wrapper p-3 border border-1 rounded-4 overflow-hidden mb-5">
 
-            <div class="table-wrapper p-3 border border-1 rounded-4 overflow-hidden mb-5">
-                    <!-- Table Start -->
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Parking</th>
-                                <th scope="col">Rating</th>
-                                <th scope="col">Distance to center</th>
-                            </tr>
-                        </thead>
-                        <tbody>   
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Parking</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Distance to center</th>
+                </tr>
+            </thead>
+            <tbody>   
 
-                            <?php foreach ($hotels as $hotel): ?>
-                                <?php                              
-                                if($has_parking == "on" && $hotel["parking"] 
-                                || $has_parking == "off"): ?>
-                                <tr>
-                                    <?php foreach ($hotel as $key => $hotelInfo): ?>
-                                        <td>
-                                            <?php 
-                                                if ($key == "parking") {
-                                                    echo $hotelInfo ?  "Available" :  "Not available";
+            <!-- BEGIN PHP BLOCK -->
+            <?php 
 
-                                                } else if ($key == "distance_to_center") {
-                                                    echo $hotelInfo . " km";   
+            foreach ($hotels as $hotel) {    
 
-                                                } else {
-                                                    echo $hotelInfo;
-                                                }
-                                            ?> 
-                                        </td>
-                                    <?php endforeach; ?>
-                                </tr>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                    <!-- Table End -->
-            </div>
+                if($has_parking == "on" && $hotel["parking"] || $has_parking == "off") { 
+
+                    echo "<tr>";
+
+                        foreach ($hotel as $key => $hotelInfo) {
+
+                            echo "<td>";
+
+                                if ($key == "parking") {
+                                echo $hotelInfo ?  "Available" :  "Not available";
+
+                                } else if ($key == "distance_to_center") {
+                                echo $hotelInfo . " km";   
+
+                                } else {
+                                echo $hotelInfo;
+                                }
+
+                            echo "</td>";
+
+                        };
+
+                    echo "</tr>";
+
+                };
+
+            };
+
+            ?>
+            <!-- END PHP BLOCK -->
+
+            </tbody>
+        </table>
+    </div>
 
     <form method="get" class="text-center">
-        <input type="checkbox" name="has_parking" <?= ($has_parking === 'on') ? 'checked="checked"' : '' ?>>
-        <label for="hasParking">Only show hotels with parking?</label>
+        <input type="checkbox" name="has_parking" id="has_parking" <?= ($has_parking === 'on') ? 'checked="checked"' : '' ?>>
+        <label for="has_parking">Only show hotels with parking?</label>
         <input class="btn btn-outline-secondary py-0 px-2" type="submit" value="filter">
     </form>
 
     </div>
-
-
 </body>
 </html>
